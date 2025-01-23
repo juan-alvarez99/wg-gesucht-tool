@@ -1,9 +1,12 @@
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+from modules.navigator import Navigator
+from modules.links import links
 
 
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    # Fills the Google form with the data found
+    navigator: Navigator = Navigator()
+    with navigator.start() as nav:
+        nav.get(links["WG-GESUCHT"])
+        pass
+
 
