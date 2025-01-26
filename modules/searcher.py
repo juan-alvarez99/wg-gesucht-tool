@@ -15,8 +15,8 @@ DEFAULT_GUI_WAITING_TIME: int = 10
 class Searcher:
     def __init__(self) -> None:
         self.__driver_path: str = rf"{os.environ['DRIVER_PATH']}"
-        self.__driver = None
-        self.__wait = None
+        self.__driver: WebDriver | None = None
+        self.__wait: WebDriverWait | None = None
 
     def __setup_driver(self) -> None:
         """
@@ -40,7 +40,7 @@ class Searcher:
             self.__setup_driver()
 
             # Define max time to find elements
-            self.__wait = WebDriverWait(self.__driver, DEFAULT_GUI_WAITING_TIME)
+            self.__wait: WebDriverWait = WebDriverWait(self.__driver, DEFAULT_GUI_WAITING_TIME)
             yield
         finally:
             self.__close_driver()

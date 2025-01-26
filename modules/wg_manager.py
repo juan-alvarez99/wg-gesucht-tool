@@ -88,7 +88,7 @@ class WgManager:
         return link
 
     @staticmethod
-    def __extract_number(string: str) -> int:
+    def __extract_number(string: str) -> int | None:
         """Extracts the first integer number from a given string
 
         :param string: The input string
@@ -99,4 +99,4 @@ class WgManager:
         if match:
             return int(match.group())
         else:
-            return 0
+            return None
