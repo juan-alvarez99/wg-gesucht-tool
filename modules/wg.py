@@ -1,6 +1,6 @@
 class WG:
-    def __init__(self, title, size, rent, link = None):
-        self.title = title
-        self.size = size
-        self.rent = rent
-        self.link = link
+    def __init__(self, title: str, size: int, rent: int, link: str):
+        self.title: str = title
+        self.size: int = size
+        self.rent: int = rent
+        self.link: str = link
