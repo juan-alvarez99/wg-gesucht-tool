@@ -12,7 +12,7 @@ from selenium.webdriver.support.wait import WebDriverWait
 
 DEFAULT_GUI_WAITING_TIME: int = 10
 
-class Navigator:
+class Searcher:
     def __init__(self) -> None:
         self.__driver_path: str = rf"{os.environ['DRIVER_PATH']}"
         self.__driver = None
@@ -49,24 +49,27 @@ class Navigator:
         if self.__driver:
             self.__driver.quit()
 
-    def apply_filters(self) -> None:
+    def apply_filters(self, filters: dict[str, str]) -> None:
         """
         Apply filters to the search
+
+        :param filters: dictionary to filter the search
         """
         # Open all filters view
         self.click_by_xpath("more-options")
 
-        for k, v in objects.filters.items():
+        for k, v in filters.items():
             if k == "rent-type":
                 self.check_rent_types(v.split(','))
 
         # Apply filters
         self.click_by_xpath("apply-filters")
 
-    def search_wg(self, link: str) -> None:
+    def search_wgs(self, link: str, filters: dict[str, str]) -> None:
         """
         Starts a new search from the WG-Gesucht website
 
+        :param filters: dictionary to filter the search
         :param link: URL to the website
         """
         # Open link from the browser
@@ -74,7 +77,16 @@ class Navigator:
         # Cleans the screen from cookies request
         self.click_by_xpath("save-cookies")
 
-        self.apply_filters()
+        self.apply_filters(filters)
+
+    # def get_all_offers(self):
+    #     offer_xpath = objects.xpaths['wg-card']
+    #     offers = self.__wait.until(ec.presence_of_all_elements_located((By.XPATH, offer_xpath)))
+    #
+    #     for offer in offers:
+    #         print(type(offer))
+    #
+    #         pass
 
     def check_rent_types(self, rent_types: list[str]) -> None:
         """
@@ -101,3 +113,6 @@ class Navigator:
 
         clickable_element = self.__wait.until(ec.element_to_be_clickable((By.XPATH, element)))
         clickable_element.click()
+
+    def get_source(self) -> str:
+        return self.__driver.page_source
