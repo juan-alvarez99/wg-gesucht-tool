@@ -10,3 +10,6 @@ class WG:
         if isinstance(other, WG):
             return self.link == other.link
         return False
+
+    def __str__(self):
+        return f"{self.title} \t {self.rent}€ \t {self.size}m2 \t {self.link}"

@@ -9,8 +9,8 @@ from selenium.webdriver.ie.webdriver import WebDriver
 from selenium.webdriver.support import expected_conditions as ec
 from selenium.webdriver.support.wait import WebDriverWait
 
-
 DEFAULT_GUI_WAITING_TIME: int = 10
+
 
 class Searcher:
     def __init__(self) -> None:

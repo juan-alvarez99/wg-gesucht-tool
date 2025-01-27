@@ -3,6 +3,7 @@ import requests
 
 from modules.wg import WG
 
+
 class SheetManager:
     def __init__(self):
         self.__sheet_url: str = os.environ["SHEETY_ENDPOINT"]
@@ -35,8 +36,10 @@ class SheetManager:
 
     def post_offers(self, wg_list: list[WG]) -> None:
         for wg in wg_list:
-            if wg not in self.__registered_wgs:
-                self.__post_new_offers(self.__wg_to_json(wg))
+            self.__post_new_offers(self.__wg_to_json(wg))
+
+    def get_registered_wgs(self) -> list[WG]:
+        return self.__registered_wgs
 
     @staticmethod
     def __wg_to_json(wg: WG) -> dict:

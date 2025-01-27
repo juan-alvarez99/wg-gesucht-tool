@@ -1,4 +1,7 @@
+import os
+
 from modules import objects
+from modules.notification_manager import NotificationManager
 from modules.searcher import Searcher
 from modules.links import links
 from modules.sheet_manager import SheetManager
@@ -11,11 +14,24 @@ if __name__ == '__main__':
     with searcher.start():
         url = links["WG-GESUCHT"]
         filters: dict = objects.filters
-        # Opens WG-Gesucht and apply filters
+
+        # Run a new search
         searcher.search_wgs(url, filters)
 
+        # Gather the data from the search
         tracker: WgManager = WgManager(searcher.get_source())
-        wgs: list[WG] = tracker.get_all_offers()
+        found_wgs: list[WG] = tracker.get_all_offers()
 
-        sheet_manager: SheetManager = SheetManager()
-        sheet_manager.post_offers(wgs)
+    # Get data from the Google Sheet
+    sheet_manager: SheetManager = SheetManager()
+    saved_wgs: list[WG] = sheet_manager.get_registered_wgs()
+
+    # Send notification when a new WG is found
+    email = os.environ["EMAIL"]
+    password: str = os.environ["PASSWORD"]
+    notification_manager: NotificationManager = NotificationManager(email, password)
+
+    new_wgs: list[WG] = [wg for wg in found_wgs if wg not in saved_wgs]
+    if new_wgs:
+        notification_manager.send_email(new_wgs)
+        sheet_manager.post_offers(new_wgs)
