@@ -1,4 +1,5 @@
 import os
+import sys
 
 from modules import objects
 from modules.notification_manager import NotificationManager
@@ -15,8 +16,12 @@ if __name__ == '__main__':
         url = links["WG-GESUCHT"]
         filters: dict = objects.filters
 
-        # Run a new search
-        searcher.search_wgs(url, filters)
+        try:
+            # Run a new search
+            searcher.search_wgs(url, filters)
+        except Exception as e:
+            # Exits if the search can not be run
+            sys.exit(1)
 
         # Gather the data from the search
         tracker: WgManager = WgManager(searcher.get_source())
