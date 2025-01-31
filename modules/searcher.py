@@ -31,9 +31,12 @@ class Searcher:
         service: Service = Service(self.__driver_path)
         options = webdriver.ChromeOptions()
 
-        # Chrome exe
-        chrome_path = os.environ['CHROME_PATH']
-        options.add_argument(f"chrome.exe={chrome_path}")
+        # Run in headless mode for servers without a display
+        options.add_argument('--headless')
+        # Required for running as root on some systems
+        options.add_argument('--no-sandbox')
+        # Overcome limited resource problems
+        options.add_argument('--disable-dev-shm-usage')
 
         # Run the browser in headless mode
         options.headless = True
