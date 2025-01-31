@@ -139,7 +139,7 @@ sudo yum install -y google-chrome-stable
 [Download](https://googlechromelabs.github.io/chrome-for-testing/) the latest version of ChromeDriver that matches the installed version of Chrome, extract the downloaded file and move the `chromedriver` binary to `/usr/local/bin`
 ```sh
 wget https://storage.googleapis.com/chrome-for-testing-public/132.0.6834.159/linux64/chromedriver-linux64.zip
-unzip chromedriver_linux64.zip
+unzip chromedriver-linux64.zip
 sudo mv chromedriver /usr/local/bin/
 sudo chmod +x /usr/local/bin/chromedriver
 ```
