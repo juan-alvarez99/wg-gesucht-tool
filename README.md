@@ -14,7 +14,7 @@ Finding a new appartment can be difficult some times and it is important to be a
 
 ***
 # Setup EC2 instance
-## Install python
+## Install python (guide from [Krishan Kumar](https://www.linkedin.com/in/krishan2aws/))
 ### Step 1: Update the system
 
 First, update the package lists and install required dependencies:
