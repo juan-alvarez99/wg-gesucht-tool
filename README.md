@@ -140,7 +140,7 @@ sudo yum install -y google-chrome-stable
 ```sh
 wget https://storage.googleapis.com/chrome-for-testing-public/132.0.6834.159/linux64/chromedriver-linux64.zip
 unzip chromedriver-linux64.zip
-sudo mv chromedriver /usr/local/bin/
+sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
 sudo chmod +x /usr/local/bin/chromedriver
 ```
 
