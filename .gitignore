@@ -2,3 +2,7 @@
 /.idea/
 /chromedriver-win64/
 /.env
+/myenv/
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
