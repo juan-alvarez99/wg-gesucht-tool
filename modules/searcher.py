@@ -21,8 +21,8 @@ DEFAULT_GUI_WAITING_TIME: int = 10
 class Searcher:
     def __init__(self) -> None:
         self.__driver_path: str = rf"{os.environ['DRIVER_PATH']}"
-        self.__driver: WebDriver | None = None
-        self.__wait: WebDriverWait | None = None
+        self.__driver = None
+        self.__wait = None
 
     def __setup_driver(self) -> None:
         """
@@ -35,9 +35,8 @@ class Searcher:
         chrome_path = os.environ['CHROME_PATH']
         options.add_argument(f"chrome.exe={chrome_path}")
 
-        # Keep the browser open if the script crashes.
-        options.add_experimental_option("detach", True)
-        options.add_argument("--start-maximized")
+        # Run the browser in headless mode
+        options.headless = True
         self.__driver: WebDriver = webdriver.Chrome(service=service, options=options)
 
     @contextmanager
@@ -65,49 +64,49 @@ class Searcher:
         # Open link from the browser
         self.__driver.get(link)
         # Cleans the screen from cookies request
-        self.click_by_xpath("save-cookies")
+        self.__click_by_xpath("save-cookies")
 
-        self.apply_filters(filters)
+        self.__apply_filters(filters)
 
-    def apply_filters(self, filters: dict[str, str]) -> None:
+    def __apply_filters(self, filters: dict[str, str]) -> None:
         """
         Apply filters to the search
 
         :param filters: dictionary to filter the search
         """
         # Open all filters view
-        self.click_by_xpath("more-options")
+        self.__click_by_xpath("more-options")
 
         for k, v in filters.items():
             if k == Filter.RentType.value:
-                self.try_filter(
-                    self.check_from_dropdown_menu,
+                self.__try_filter(
+                    self.__check_from_dropdown_menu,
                     label=k,
                     options=v.split(','),
                 )
             elif k == Filter.EarliestMove.value:
-                self.click_by_xpath(k)
-                self.try_filter(
-                    self.select_date,
+                self.__click_by_xpath(k)
+                self.__try_filter(
+                    self.__select_date,
                     date_str=v,
                 )
             elif k == Filter.Searched.value:
-                self.try_filter(
-                    self.check_from_dropdown_menu,
+                self.__try_filter(
+                    self.__check_from_dropdown_menu,
                     label=k,
                     options=v.split(','),
                 )
         # Enable filters
-        self.click_by_xpath("apply-filters")
+        self.__click_by_xpath("apply-filters")
 
-    def check_from_dropdown_menu(self, label: str, options: list[str]) -> None:
+    def __check_from_dropdown_menu(self, label: str, options: list[str]) -> None:
         """
         Select the desired rent types to the filters
 
         :param str label: Label of the dropdown menu
         :param list[str] options: All options to check from the dropdown menu
         """
-        self.click_by_xpath(label)
+        self.__click_by_xpath(label)
         dropdown_menu = self.__wait.until(ec.presence_of_element_located((By.XPATH, objects.xpaths["dropdown-menu"])))
         for option in options:
             xpath = f"//a[contains(., '{option}')]"
@@ -115,7 +114,7 @@ class Searcher:
             rent_type_checkbox = dropdown_menu.find_element(By.XPATH, xpath)
             rent_type_checkbox.click()
 
-    def select_date(self, date_str: str) -> None:
+    def __select_date(self, date_str: str) -> None:
         """
         Selects a date in a date calendar.
 
@@ -124,13 +123,14 @@ class Searcher:
         date: list[str] = date_str.split(".")
 
         try:
-            self.select_calendar_dropdown("select-year", date[2])
-            self.select_calendar_dropdown("select-month", date[1])
-            self.select_calendar_day(int(date[0]))  # Remove any 0 on the left
+            self.__select_calendar_dropdown("select-year", date[2])
+            self.__select_calendar_dropdown("select-month", date[1])
+            self.__select_calendar_day(int(date[0]))  # Remove any 0 on the left
         except NoSuchElementException:
-            raise RuntimeError("Could not select date. Please check that the string is in the correct format (e.g. '1.January.2000)'")
+            raise RuntimeError(
+                "Could not select date. Please check that the string is in the correct format (e.g. '1.January.2000)'")
 
-    def select_calendar_dropdown(self, label: str, option: str) -> None:
+    def __select_calendar_dropdown(self, label: str, option: str) -> None:
         """
         Select a given Month/Year from a calendar view
 
@@ -146,11 +146,11 @@ class Searcher:
         select_option: WebElement = dropdown.find_element(By.XPATH, option_xpath)
         select_option.click()
 
-    def select_calendar_day(self, day: str | int) -> None:
+    def __select_calendar_day(self, day: int) -> None:
         """
         Select a given day from a calendar view
 
-        :param day: Number of the desired day to select
+        :param int day: Number of the desired day to select
         """
         calendar_xpath: str = objects.xpaths["date-calendar"]
         calendar = self.__wait.until(ec.element_to_be_clickable((By.XPATH, calendar_xpath)))
@@ -158,7 +158,7 @@ class Searcher:
         day_in_calendar = calendar.find_element(By.XPATH, day_xpath)
         day_in_calendar.click()
 
-    def click_by_xpath(self, xpath_key: str) -> None:
+    def __click_by_xpath(self, xpath_key: str) -> None:
         """
         Find and click an object by its xpath key within the xpaths dictionary
 
@@ -171,7 +171,7 @@ class Searcher:
         clickable_element.click()
 
     @staticmethod
-    def try_filter(filter_func: callable, *args, **kwargs):
+    def __try_filter(filter_func: callable, *args, **kwargs):
         """
         Skips the filter if something fails
 

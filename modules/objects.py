@@ -19,6 +19,5 @@ filters: dict[Filter, str] = {
     Filter.RentType.value: 'Long Term,Short Term',
     Filter.EarliestMove.value: '01.April.2025',
     Filter.Searched.value: 'Male/s',
-    Filter.MyAge.value: '25',
     Filter.WithPhotos.value: 'True',
 }

@@ -4,6 +4,7 @@ from bs4 import BeautifulSoup, ResultSet, Tag
 from modules.links import links
 from modules.wg import WG
 
+UNKNOWN_INT = -1
 
 class WgManager:
     def __init__(self, html):
@@ -88,7 +89,7 @@ class WgManager:
         return link
 
     @staticmethod
-    def __extract_number(string: str) -> int | None:
+    def __extract_number(string: str) -> int:
         """Extracts the first integer number from a given string
 
         :param string: The input string
@@ -99,4 +100,4 @@ class WgManager:
         if match:
             return int(match.group())
         else:
-            return None
+            raise RuntimeError("Could not find numeral data in this tag")
