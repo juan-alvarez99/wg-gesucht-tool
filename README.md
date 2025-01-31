@@ -170,7 +170,6 @@ pip install -r requirements.txt
 
 ```sh
 DRIVER_PATH='/usr/local/bin/chromedriver'
-CHROME_PATH=/usr/bin/google-chrome
 
 # Sheety endpoint
 SHEETY_ENDPOINT=
