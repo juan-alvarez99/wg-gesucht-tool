@@ -35,7 +35,7 @@ class WgManager:
             "link": links["LINK-BASE"] + link_tag.get("href"),
         }
 
-        middle_row = wgg_card_tag.find('div', {'class': ['row', 'noprint', 'middle']})
+        middle_row = wgg_card_tag.select_one('div.row.noprint.middle')
         text_in_row = middle_row.find_all('b')
 
         for data in text_in_row:

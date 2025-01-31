@@ -23,7 +23,7 @@ class NotificationManager:
         msg["From"] = self.email
         msg["To"] = self.email
 
-        with smtplib.SMTP("smtp.gmail.com") as server:
+        with smtplib.SMTP(host="email-smtp.eu-north-1.amazonaws.com", port=587,timeout=10) as server:
             server.starttls()
             server.login(user=self.email, password=self.password)
             server.sendmail(self.email, self.email, msg.as_string())
