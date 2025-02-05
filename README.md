@@ -1,13 +1,3 @@
-### Table of Contents  
-[WG Gesucht Tool](#wg-gesucht-tool)
-- [How it works](#how-it-works)
-- [Options to run the tool](#options-to-run-the-tool)
-
-[Setup EC2 instance](#setup-ec2-instance)
-- [Install python](#install-python)
-- [Install Chrome Web Browser and corresponding WebDriver](#install-chrome-web-browser-and-corresponding-webdriver)
-- [Clone the project and setup environment](#clone-the-project-and-setup-environment)
-
 # WG Gesucht Tool
 Finding a new appartment can be difficult some times and it is important to be always alert to find the new adds. That's why I developed a Shared Flat Web Searcher for the Website [WG-Gesucht](https://www.wg-gesucht.de/en/), which is the most known tool for finding accommodation in Germany.
 
