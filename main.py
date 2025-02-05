@@ -26,9 +26,10 @@ if __name__ == '__main__':
             # Run a new search
             searcher.search_wgs(url, filters)
 
-            if searcher.get_applied_filters():
+            unapplied_filters: list[str] = searcher.get_unapplied_filters()
+            if unapplied_filters:
                 # Report if the search could be run with errors
-                sheet_manager.add_warning("Could not apply all filters.")
+                sheet_manager.add_warning(f"Could not apply all filters: {unapplied_filters}")
 
             # Gather the data from the search
             tracker: WgManager = WgManager(searcher.get_source())

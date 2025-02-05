@@ -23,7 +23,7 @@ class Searcher:
         self.__driver_path: str = rf"{os.environ['DRIVER_PATH']}"
         self.__driver = None
         self.__wait = None
-        self.__applied_filters: list[bool] = []
+        self.__unapplied_filters: list[str] = []
 
     def __setup_driver(self) -> None:
         """
@@ -82,21 +82,23 @@ class Searcher:
 
         for k, v in filters.items():
             if k == Filter.RentType.value or k == Filter.Searched.value:
-                self.__applied_filters.append(
-                    self.__try_filter(
-                        self.__check_from_dropdown_menu,
-                        label=k,
-                        options=v.split(','),
-                    )
+                is_successful = self.__try_filter(
+                    self.__check_from_dropdown_menu,
+                    label=k,
+                    options=v.split(','),
                 )
+                if not is_successful:
+                    self.__unapplied_filters.append(k)
+                
             elif k == Filter.EarliestMove.value:
                 self.__click_by_xpath(k)
-                self.__applied_filters.append(
-                    self.__try_filter(
-                        self.__select_date,
-                        date_str=v,
-                    )
+                is_successful = self.__try_filter(
+                    self.__select_date,
+                    date_str=v,
                 )
+                if not is_successful:
+                    self.__unapplied_filters.append(k)
+                
         # Enable filters
         self.__click_by_xpath("apply-filters")
 
@@ -190,5 +192,5 @@ class Searcher:
     def get_source(self) -> str:
         return self.__driver.page_source
     
-    def get_applied_filters(self) -> list[bool]:
-        return self.__applied_filters
+    def get_unapplied_filters(self) -> list[str]:
+        return self.__unapplied_filters
