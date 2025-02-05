@@ -1,7 +1,7 @@
 ### Table of Contents  
 [WG Gesucht Tool](#wg-gesucht-tool)
 - [How it works](#how-it-works)
-- [How to use it](#how-to-use-it)
+- [Options to run the tool](#options-to-run-the-tool)
 
 [Setup EC2 instance](#setup-ec2-instance)
 - [Install python](#install-python)
@@ -20,7 +20,7 @@ Finding a new appartment can be difficult some times and it is important to be a
 - The status of each search is reported on Google Sheets.
 
 ## Options to run the tool
-The best option to run this project is on a Raspberry Pi connected to the internet, but it can be run on an AWS EC2 instance.
+The best option to run this project is on a Raspberry Pi with internet access, but it can also be run on an AWS EC2 instance.
 
 ***
 # Setup EC2 instance
