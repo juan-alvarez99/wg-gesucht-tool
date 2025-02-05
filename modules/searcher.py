@@ -23,6 +23,7 @@ class Searcher:
         self.__driver_path: str = rf"{os.environ['DRIVER_PATH']}"
         self.__driver = None
         self.__wait = None
+        self.__applied_filters: list[bool] = []
 
     def __setup_driver(self) -> None:
         """
@@ -68,12 +69,11 @@ class Searcher:
         self.__driver.get(link)
         # Cleans the screen from cookies request
         self.__click_by_xpath("save-cookies")
-
         self.__apply_filters(filters)
 
     def __apply_filters(self, filters: dict[str, str]) -> None:
         """
-        Apply filters to the search
+        Apply filters to the search using WebDriver
 
         :param filters: dictionary to filter the search
         """
@@ -81,23 +81,21 @@ class Searcher:
         self.__click_by_xpath("more-options")
 
         for k, v in filters.items():
-            if k == Filter.RentType.value:
-                self.__try_filter(
-                    self.__check_from_dropdown_menu,
-                    label=k,
-                    options=v.split(','),
+            if k == Filter.RentType.value or k == Filter.Searched.value:
+                self.__applied_filters.append(
+                    self.__try_filter(
+                        self.__check_from_dropdown_menu,
+                        label=k,
+                        options=v.split(','),
+                    )
                 )
             elif k == Filter.EarliestMove.value:
                 self.__click_by_xpath(k)
-                self.__try_filter(
-                    self.__select_date,
-                    date_str=v,
-                )
-            elif k == Filter.Searched.value:
-                self.__try_filter(
-                    self.__check_from_dropdown_menu,
-                    label=k,
-                    options=v.split(','),
+                self.__applied_filters.append(
+                    self.__try_filter(
+                        self.__select_date,
+                        date_str=v,
+                    )
                 )
         # Enable filters
         self.__click_by_xpath("apply-filters")
@@ -131,7 +129,7 @@ class Searcher:
             self.__select_calendar_day(int(date[0]))  # Remove any 0 on the left
         except NoSuchElementException:
             raise RuntimeError(
-                "Could not select date. Please check that the string is in the correct format (e.g. '1.January.2000)'")
+                "Could not select date. Check that the string is in the correct format (e.g. '1.January.2000)'")
 
     def __select_calendar_dropdown(self, label: str, option: str) -> None:
         """
@@ -174,17 +172,23 @@ class Searcher:
         clickable_element.click()
 
     @staticmethod
-    def __try_filter(filter_func: callable, *args, **kwargs):
+    def __try_filter(filter_func: callable, *args, **kwargs) -> bool:
         """
         Skips the filter if something fails
 
         :param filter_func: method that should act to meet the filter
+
+        :return: True if the filters could be applied successfully
         """
         try:
             filter_func(*args, **kwargs)
-        except Exception as e:
-            print(f"Could not apply filter: {e}")
-            return
+            return True
+        except Exception:
+            # Could not apply filter
+            return False
 
     def get_source(self) -> str:
         return self.__driver.page_source
+    
+    def get_applied_filters(self) -> list[bool]:
+        return self.__applied_filters

@@ -13,3 +13,11 @@ class WG:
 
     def __str__(self):
         return f"{self.title} \t {self.rent}€ \t {self.size}m2 \t {self.link}"
+    
+    def to_dict(self) -> dict:
+        return {
+            "title": self.title,
+            "size": self.size,
+            "rent": self.rent,
+            "link": self.link,
+        }
