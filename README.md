@@ -17,10 +17,10 @@ Finding a new appartment can be difficult some times and it is important to be a
 - Using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) to scrap the html code parsing the data from each ad: rent prize, size of the room...
 - In order to analyze the data to estimate the cost of a room in the searched city, the results of the search are sync with Google Sheet using [Sheety](https://sheety.co/docs) to generate an API endpoint to a specific sheet. There I can play some statistics!
 - If during the search a new ad is found, the app is going to send me an email with a link to the WG ad
+- The status of each search is reported on Google Sheets.
 
-
-## How to use it
-1. Clone the project and create the virtual environment from the requirements.txt file
+## Options to run the tool
+The best option to run this project is on a Raspberry Pi connected to the internet, but it can be run on an AWS EC2 instance.
 
 ***
 # Setup EC2 instance
@@ -150,6 +150,7 @@ sudo chmod +x /usr/local/bin/chromedriver
 ### Step 1: Clone the project
 
 ```sh
+cd
 git clone https://github.com/juan-alvarez99/wg-gesucht-tool.git
 ```
 
@@ -166,7 +167,7 @@ source myenv/bin/activate
 pip install -r requirements.txt
 ```
 
-### Step 4: Create a .env file with the following variables
+### Step 4: Set the environmental variables as follows
 
 ```sh
 DRIVER_PATH='/usr/local/bin/chromedriver'
